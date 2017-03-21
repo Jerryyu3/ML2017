@@ -127,7 +127,7 @@ def main():
   #print (np.shape(test_data));
   #print (test_data);
   ansy = np.dot(test_data,W);  
-  print (ansy);
+  #print (ansy);
   with open(sys.argv[3],'w') as file3:
     strg = "id,value\n";
     for j in range(240):
