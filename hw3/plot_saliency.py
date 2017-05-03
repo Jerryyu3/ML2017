@@ -55,7 +55,7 @@ def main():
     pixels,_ = load_data("./train.csv");
     input_img = emotion_classifier.input
     #img_ids = ["image ids from which you want to make heatmaps"]
-    img_ids = [28602,28606,28648,28650];
+    img_ids = [28602,28603,28604,28606,28648,28650];
 
     for idx in img_ids:
         val_proba = emotion_classifier.predict(pixels[idx])
@@ -74,6 +74,8 @@ def main():
         for i in range(20):
             grads = fn([pixels[idx], 1]);
             heatmap += grads;
+        heatmap = abs(heatmap);
+        heatmap = heatmap/(np.amax(heatmap));
 
         plt.figure()
         plt.imshow(pixels[idx].reshape(48,48),cmap='gray')
@@ -84,7 +86,7 @@ def main():
         fig.savefig(os.path.join(cmap_dir, '{}_original.png'.format(idx)),dpi=100);
 
         heatmap = heatmap.reshape(48,48);
-        thres = 0.7
+        thres = 0.1
         see = pixels[idx].reshape(48, 48)
         see[np.where(heatmap <= thres)] = np.mean(see)
 
