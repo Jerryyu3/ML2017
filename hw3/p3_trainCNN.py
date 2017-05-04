@@ -53,7 +53,7 @@ def train(x_train,y_train):
 
   base_dir = (os.path.dirname(os.path.realpath(__file__)));
   exp_dir = os.path.join(base_dir,'exp');
-  dir_cnt = 0; epoch = 400;
+  dir_cnt = 0; epoch = 600;
   log_path = "epoch{}".format(str(epoch)); log_path += "_";
   store_path = os.path.join(exp_dir,log_path+str(dir_cnt));
 
@@ -67,7 +67,7 @@ def train(x_train,y_train):
 
   model = Sequential();
 
-  model.add(Conv2D(64,(5,5),border_mode='valid',input_shape=(48,48,1)));
+  model.add(Conv2D(64,(5,5),padding='valid',input_shape=(48,48,1)));
   model.add(keras.layers.advanced_activations.PReLU(alpha_initializer='zero', weights=None));
   model.add(keras.layers.convolutional.ZeroPadding2D(padding=2)); 
   model.add(MaxPooling2D(pool_size=(5,5),strides=(2,2)));
@@ -111,9 +111,9 @@ def train(x_train,y_train):
   x_train1 = x_train1.reshape(x_train1.shape[0],48,48,1);
   x_val = x_val.reshape(x_val.shape[0],48,48,1);
 
-  #ada = Adadelta(lr=0.1, rho=0.95, epsilon=1e-08);
-  #model.compile(loss="categorical_crossentropy",optimizer=ada,metrics=['accuracy']); 
-  model.compile(loss="categorical_crossentropy",optimizer='adam',metrics=['accuracy']);
+  ada = Adadelta(lr=0.1, rho=0.95, epsilon=1e-08);
+  model.compile(loss="categorical_crossentropy",optimizer=ada,metrics=['accuracy']); 
+  #model.compile(loss="categorical_crossentropy",optimizer='adam',metrics=['accuracy']);
   acc = 0; iteration = 0
   
   #while(iteration<1):
@@ -142,7 +142,7 @@ def train(x_train,y_train):
     vertical_flip=False)  # randomly flip images
 
   datagen.fit(x_train1);
-  model.fit_generator(datagen.flow(x_train1,y_train1,batch_size=64),steps_per_epoch=int(x_train1.shape[0]/64),nb_epoch=epoch,validation_data=(x_val,y_val),callbacks=[history])#,callbacks=[checkpointer])
+  model.fit_generator(datagen.flow(x_train1,y_train1,batch_size=64),steps_per_epoch=int(x_train1.shape[0]/64),epochs=epoch,validation_data=(x_val,y_val),callbacks=[history])#,callbacks=[checkpointer])
   dump_history(store_path,history);
   model.save(os.path.join(store_path,'model.h5'));
 
