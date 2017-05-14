@@ -11,7 +11,7 @@ y = npzfile['y']
 # we already normalize these values in gen.py
 # X /= X.max(axis=0, keepdims=True)
 
-svr = SVR(C=1)
+svr = SVR(C=10)
 svr.fit(X, y)
 
 

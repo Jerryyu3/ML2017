@@ -38,7 +38,7 @@ def gen_data(dim, layer_dims, N):
 def get_eigenvalues(data,fix):
     SAMPLE = 10 # sample some points to estimate
     NEIGHBOR = 150 # pick some neighbor to compute the eigenvalues
-    #if(fix==1):np.random.seed(1);
+    if(fix==1):np.random.seed(1);
     randidx = np.random.permutation(data.shape[0])[:SAMPLE]
     knbrs = NearestNeighbors(n_neighbors=NEIGHBOR,
                              algorithm='ball_tree').fit(data)
